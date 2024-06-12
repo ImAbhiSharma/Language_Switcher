@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Language Switcher</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1 data-trans="header">Test Header</h1>
+  <p data-trans="somekey">Test P Tag</p>
+  <button data-lang="ar">AR</button>
+
+  <script>
+    let browserLanguageString = (navigator.language || navigator.userLanguage);
+    let lang = browserLanguageString.substring(0, 2);
+
+
+    let translations = {
+      "en": {
+          "header": "Test Header",
+          "somekey": "Test P Tag"
+      },
+      "ar": {
+          "header": "رأس الاختبار",
+          "somekey": "علامة فقرة الاختبار"
+      }
+    };
+
+    $("[data-lang]").on("click", function() {
+        lang = $(this).data('lang');
+        if (lang == "ar") {
+            $(this).data('lang', "en").text('EN');
+        } else {
+            $(this).data('lang', "ar").text('AR');
+        }
+        translate(lang);
+    });
+
+    function translate(lang) {
+      $('[data-trans]').each(function() {
+          var lb = $(this).data('trans');
+          if (translations[lang][lb] != undefined) {
+              $(this).html(translations[lang][lb]);
+          }
+  
+          if (lang == "ar") {
+              $('body').addClass('rtl-text');
+          } else {
+              $('body').removeClass('rtl-text');
+          }
+      });
+    }
+
+    translate("en");
+  </script>
+</body>
+</html>
